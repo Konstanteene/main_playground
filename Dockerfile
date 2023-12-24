@@ -1,7 +1,6 @@
-FROM node:20-alpine
+FROM node:latest
 WORKDIR /app
 COPY package*.json ./
-RUN npm cache clean --force
 RUN npm install
 COPY . .
 CMD node server.js
