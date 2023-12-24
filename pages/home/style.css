@@ -31,50 +31,31 @@
   color: white;
 }
 
-/* RGB */
 
-body{
-  background-color: white;
+/* Animated text*/
+@keyframes flicker {
+  0%, 18%, 22%, 25%, 53%, 57%, 100% { opacity: 1; }
+  20%, 24%, 55% { opacity: 0; }
 }
 
-.area{
-  position: absolute;
-  width: 30%;
-  padding: 1em;
-  top: 50%; left: 50%;
-  transform: translate(-50%, -50%);
+.text {
+  animation: flicker 3s infinite; 
+  color: black;
   text-align: center;
-  box-shadow: 8px 6px 10px black;
-  background-color: white;
-  border: solid;
-  border-color: black;
-  border-width: 4px;
-  border-radius: 10px;
+  font-family: 'Courier New', Courier, monospace;
+  font-size: 50px;
+  font-weight: bold;
 }
 
-h1{
-  font-family: "Comic Sans MS", monospace;
+/* Animated background */
+
+@keyframes rgb {
+  0% { background-color: violet;   }
+  33% { background-color: indigo; }
+  66% { background-color: blue; }
+  100% { background-color: violet;   }
 }
 
-p{
-  font-family: "Comic Sans MS", monospace;
+body {
+  animation: rgb 10s infinite;
 }
-
-#red_s{
-  font-family: "Comic Sans MS", monospace;
-}
-
-#green_s{
-  font-family: "Comic Sans MS", monospace;
-}
-
-#blue_s{
-  font-family: "Comic Sans MS", monospace;
-}
-
-.slider{
-  font-size: 20px;
-  
-}
-
-
