@@ -3,9 +3,9 @@ const mysql = require('mysql2');
 const path = require('path');
 require('dotenv').config();
 
-app.set('view engine', 'ejs');
-
 const app = express();
+
+app.set('view engine', 'ejs');
 
 const PORT = 3000;
 
@@ -30,6 +30,14 @@ connection.connect(function(err) {
 // pages
 app.get('/', (req, res) =>{
     res.sendFile(path.join(__dirname, 'pages', 'index.html'));
+});
+
+app.get('/rgb', (req, res) =>{
+    res.sendFile(path.join(__dirname, 'pages', 'rgb.html'));
+});
+
+app.get('/sql_page', (req, res) =>{
+    res.sendFile(path.join(__dirname, 'pages', 'sql_page.html'));
 });
 
 app.listen(PORT, () =>{
