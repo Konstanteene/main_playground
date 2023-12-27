@@ -3,8 +3,12 @@ const mysql = require('mysql2');
 const path = require('path');
 require('dotenv').config();
 
+app.set('view engine', 'ejs');
+
 const app = express();
+
 const PORT = 3000;
+
 app.use(express.static(path.join(__dirname, 'pages')));
 
 // db 
