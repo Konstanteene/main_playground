@@ -1,0 +1,36 @@
+version: '3.8'
+
+services:
+  mysql:
+    image: mysql:8.2
+    container_name: mysql-8.2
+    env_file:
+      - .env
+    environment:
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
+      MYSQL_DATABASE: ${MYSQL_DATABASE}
+    volumes:
+      - db_data:/var/lib/mysql
+      - ./db/webapp.sql:/docker-entrypoint-initdb.d/webapp.sql
+    restart: on-failure
+
+  nodejs:
+    build: ./
+    container_name: node-21-alpine
+    depends_on:
+      - mysql
+    restart: on-failure
+    env_file:
+      - .env
+    environment:  
+      MYSQL_DATABASE: ${MYSQL_DATABASE}
+      MYSQL_USER: ${MYSQL_USER}
+      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+      MYSQL_HOST: ${MYSQL_HOST}
+    ports:
+      - 3000:3000
+
+volumes:
+  db_data:
+
+  
