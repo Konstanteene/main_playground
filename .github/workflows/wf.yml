@@ -30,9 +30,9 @@ jobs:
       - name: Increment app version
         run: |
           npm version patch
-          git add .
-          git commit -m "Version dump"
-          git push --follow-tags
+          # git add .
+          # git commit -m "Version dump"
+          # git push --follow-tags
       
       - name: Get current app version
         run: echo "CURRENT_VERSION=$(node -p \"require('./package.json').version\")" >> $GITHUB_ENV
