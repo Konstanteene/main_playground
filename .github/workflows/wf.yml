@@ -32,8 +32,7 @@ jobs:
 
       - name: Increment app version
         run: |
-          git add . && git commit
-          npm version patch 
+          npm --no-git-tag-version version patch 
           # git add .
           # git commit -m "Version dump"
           # git push --follow-tags
