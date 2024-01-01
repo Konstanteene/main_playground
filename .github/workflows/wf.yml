@@ -15,13 +15,16 @@ jobs:
     
     steps:
       - name: Checkout repository
-        uses: actions/checkout@v2
+        uses: actions/checkout@v3
 
       - name: Set up Node.js
         uses: actions/setup-node@v4
         with:
-          node-version: '20.5'
-
+          node-version: '20'
+      - name: current directory
+        run: |
+          pwd
+          ls -la
       - name: Configure Git user
         run: |
           git config --global user.email "githubaction@example.com"
