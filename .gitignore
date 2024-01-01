@@ -2,3 +2,4 @@ node_modules
 .hintrc
 cat
 todo
+ejs-pages
