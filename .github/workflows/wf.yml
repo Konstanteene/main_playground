@@ -34,17 +34,16 @@ jobs:
           git add . && git commit -am "new version"
         fi
     
-    - name: status
-      run: git status    
+    #- name: status
+    #  run: git status    
 
     - name: PAIN...
-      run: |
-        git status  
-        npm --no-git-tag-version version patch
-        git status  
-      continue-on-error: true
+      run: npm --no-git-tag-version version patch
+    #    git status  
         
-    - name: status
-      run: git status
+    #    git status  
+        
+    #- name: status
+    #  run: git status
     - name: version status
       run: node -p "require('./package.json').version"
