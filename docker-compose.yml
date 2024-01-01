@@ -14,9 +14,9 @@ services:
       - ./db/webapp.sql:/docker-entrypoint-initdb.d/webapp.sql
     restart: on-failure
 
-  nodejs:
-    build: ./
-    container_name: node-21-alpine
+  webapp:
+    image: konstanteen/webapp:latest
+    container_name: webapp
     depends_on:
       - mysql
     restart: on-failure
