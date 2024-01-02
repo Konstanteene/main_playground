@@ -11,6 +11,8 @@ jobs:
     env: 
       DOCKERHUB_USERNAME: ${{ vars.DOCKERHUB_USERNAME }}
       DOCKERHUB_PASSWORD: ${{ secrets.DOCKERHUB_PASSWORD }}
+      GH_PASSWORD: ${{ secrets.GH_PASSWORD }} # github password
+      GH_USERNAME: ${{ vars.GH_USERNAME }} # github username
 
     steps:
     - name: Checkout repository
@@ -44,8 +46,9 @@ jobs:
         push: true
         tags: ${{ env.DOCKERHUB_USERNAME }}/webapp-test:${{ env.CURRENT_VERSION }}-test
     
-    - name: Commit verion update
+    - name: Commit version update
       run: |
+        git remote set-url origin "https://${{ env.GH_USERNAME }}:${{ env.GH_PASSWORD }}@github.com/Konstanteene/main_playground.git"
         git add .
         git commit -m "ci: version bump"
         git push origin feature
