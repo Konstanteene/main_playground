@@ -33,9 +33,10 @@ jobs:
       run: npm --no-git-tag-version version patch
 
     - name: Get current app version
-      run: |
-        echo "CURRENT_VERSION=$(node -e 'require("./package.json").version')" >> $GITHUB_ENV
-        echo $CURRENT_VERSION
+      run: echo "CURRENT_VERSION=$(node -p 'require("./package.json").version')" >> $GITHUB_ENV
+
+    - name: test
+      run: echo $CURRENT_VERSION
 
     - name: Version status
       run: node -p "require('./package.json').version"
