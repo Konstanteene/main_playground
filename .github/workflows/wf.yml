@@ -33,7 +33,9 @@ jobs:
       run: npm --no-git-tag-version version patch
 
     - name: Get current app version
-      run: echo "CURRENT_VERSION=$(node -p 'require(\"./package.json\").version')" >> $GITHUB_ENV
+      run: |
+        echo "CURRENT_VERSION=$(node -p 'require(\"./package.json\").version')" >> $GITHUB_ENV
+        echo $CURRENT_VERSION
 
     - name: Version status
       run: node -p "require('./package.json').version"
@@ -43,7 +45,10 @@ jobs:
       with:
         username: ${{ env.DOCKERHUB_USERNAME }}
         password: ${{ env.DOCKERHUB_PASSWORD }}
-      
+
+    - name: Version check
+      run: echo $CURRENT_VERSION
+
     - name: Build and push
       uses: docker/build-push-action@v5
       with:
