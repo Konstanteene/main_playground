@@ -54,4 +54,4 @@ jobs:
       uses: docker/build-push-action@v5
       with:
         push: true
-        tags: ${{ env.DOCKERHUB_USERNAME }}/webapp:$CURRENT_VERSION
+        tags: ${{ env.DOCKERHUB_USERNAME }}/webapp:${{ env.CURRENT_VERSION }}
