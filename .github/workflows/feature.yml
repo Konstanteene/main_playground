@@ -23,10 +23,10 @@ jobs:
       with:
         node-version: 20
     
-    - name: Github connection config
-      run: |
-        git config --global user.email "feature@example.com"
-        git config --global user.name "Github Action"
+    # - name: Github connection config
+    #   run: |
+    #     git config --global user.email "feature@example.com"
+    #     git config --global user.name "Github Action"
 
     - name: Version increment
       run: npm --no-git-tag-version version patch
@@ -52,4 +52,3 @@ jobs:
         git add .
         git commit -m "ci: version bump"
         git push origin feature
-        
