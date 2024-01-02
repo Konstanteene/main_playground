@@ -52,3 +52,4 @@ jobs:
         git add .
         git commit -m "ci: version bump"
         git push origin feature
+        
