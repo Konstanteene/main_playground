@@ -1,3 +1,3 @@
 #!/bin/bash
-docker-compose -f docker-compse.yml up -d
+docker-compose -f docker-compose.yml up -d
 echo "success"
