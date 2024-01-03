@@ -75,4 +75,4 @@ jobs:
           host: ${{ env.AWS_EC2_HOST }}
           username: ${{ env.AWS_EC2_USER_NAME }}
           key: ${{ env.AWS_EC2_SSH_KEY }}
-          script: bash ./deploy-to-ec2.sh
+          script: bash ./scripts/deploy-to-ec2.sh
