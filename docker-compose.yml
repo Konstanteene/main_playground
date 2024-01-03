@@ -15,7 +15,7 @@ services:
     restart: on-failure
 
   webapp:
-    image: konstanteen/webapp:1.0.8
+    image: konstanteenn/webapp:1.0.8
     container_name: webapp
     depends_on:
       - mysql
