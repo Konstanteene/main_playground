@@ -59,13 +59,19 @@ jobs:
       AWS_EC2_HOST: ${{ secrets.AWS_EC2_HOST }}
       AWS_EC2_USER_NAME: ${{ secrets.AWS_EC2_USER_NAME }} 
     steps: 
-      - name: set up ssh key
-        run: echo ${{ env.AWS_EC2_SSH_KEY }} > ~/.ssh/id_rsa && chmod 600 ~/.ssh/id_rsa
+      - name: copy files
+        uses: appleboy/scp-action@v0.1.7
+        with:
+          host: ${{ env.AWS_EC2_HOST }}
+          username: ${{ env.AWS_EC2_USER_NAME }}
+          key: ${{ env.AWS_EC2_SSH_KEY }}
+          source: "scripts/deploy-to-ec2.sh,docker-compose.yml"
+          target: /home/ubuntu
 
-      - name: copy files to ec2
-        run: |
-          scp ./scripts/deploy-to-ec2.sh ${{ env.AWS_EC2_USER_NAME }}@${{ env.AWS_EC2_HOST }}:/home/ubuntu
-          scp docker-compose.yml ${{ env.AWS_EC2_USER_NAME }}@${{ env.AWS_EC2_HOST }}:/home/ubuntu
-
-      - name: ssh to ec2 and run docker-compose
-        run: ssh -i ~/.ssh/id_rsa ${{ env.AWS_EC2_USER_NAME }}@${{ env.AWS_EC2_HOST }} bash ./deploy-to-ec2.sh
+      - name: ssh connect and run docker-compose
+        uses: appleboy/ssh-action@v1.0.2
+        with:
+          host: ${{ env.AWS_EC2_HOST }}
+          username: ${{ env.AWS_EC2_USER_NAME }}
+          key: ${{ env.AWS_EC2_SSH_KEY }}
+          script: bash ./deploy-to-ec2.sh
