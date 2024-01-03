@@ -1,4 +1,4 @@
-name: ci (feature)
+name: ci/cd (feature)
 
 on:
   push:
@@ -52,4 +52,20 @@ jobs:
     #     git add .
     #     git commit -m "ci: version bump"
     #     git push origin feature
-        
+  deploy:
+    runs-on: ubuntu-latest
+    env:
+      AWS_EC2_SSH_KEY: ${{ secrets.AWS_EC2_SSH_KEY }}
+      AWS_EC2_HOST: ${{ secrets.AWS_EC2_HOST }}
+      AWS_EC2_USER_NAME: ${{ secrets.AWS_EC2_USER_NAME }} 
+    steps: 
+      - name: set up ssh key
+        run: echo ${{ env.AWS_EC2_SSH_KEY }} > ~/.ssh/id_rsa && chmod 600 ~/.ssh/id_rsa
+
+      - name: copy files to ec2
+        run: |
+          scp ./scripts/deploy-to-ec2.sh ${{ env.AWS_EC2_USER_NAME }}@${{ env.AWS_EC2_HOST }}:/home/ubuntu
+          scp docker-compose.yml ${{ env.AWS_EC2_USER_NAME }}@${{ env.AWS_EC2_HOST }}:/home/ubuntu
+
+      - name: ssh to ec2 and run docker-compose
+        run: ssh -i ~/.ssh/id_rsa ${{ env.AWS_EC2_USER_NAME }}@${{ env.AWS_EC2_HOST }} bash ./deploy-to-ec2.sh
