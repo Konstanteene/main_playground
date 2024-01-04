@@ -15,7 +15,10 @@ services:
     restart: on-failure
 
   webapp:
-    image: konstanteenn/webapp:1.0.8
+    # build:
+    #   context: ./
+    #   dockerfile: Dockerfile
+    image: konstanteenn/webapp:latest
     container_name: webapp
     depends_on:
       - mysql
@@ -24,8 +27,8 @@ services:
       - .env
     environment:  
       MYSQL_DATABASE: ${MYSQL_DATABASE}
-      # MYSQL_USER: ${MYSQL_USER}
-      # MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+      MYSQL_USER: ${MYSQL_USER}
+      #MYSQL_PASSWORD: ${MYSQL_PASSWORD}
       MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
       MYSQL_HOST: ${MYSQL_HOST}
     ports:
