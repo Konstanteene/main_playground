@@ -1,4 +1,4 @@
-name: ci/cd (main)
+name: ci/cd (feature)
 
 on:
   push:
@@ -26,7 +26,7 @@ jobs:
     - name: Github connection config
       run: |
         git config --global user.email "main@example.com"
-        git config --global user.name "Github Action"
+        git config --global user.name "Github Action Main"
 
     - name: Version increment
       run: npm --no-git-tag-version version patch
@@ -44,7 +44,7 @@ jobs:
       uses: docker/build-push-action@v5
       with:
         push: true
-        tags: ${{ env.DOCKERHUB_USERNAME }}/webapp:${{ env.CURRENT_VERSION }}
+        tags: ${{ env.DOCKERHUB_USERNAME }}/webapp:${{ env.CURRENT_VERSION }},${{ env.DOCKERHUB_USERNAME }}/webapp:latest
     
     - name: Commit version update
       run: |
@@ -52,4 +52,29 @@ jobs:
         git add .
         git commit -m "ci: version bump"
         git push origin main
-        
+
+  deploy:
+    needs: build
+    runs-on: ubuntu-latest
+    env:
+      AWS_EC2_SSH_KEY: ${{ secrets.AWS_EC2_SSH_KEY }}
+      AWS_EC2_HOST: ${{ secrets.AWS_EC2_HOST }}
+      AWS_EC2_USER_NAME: ${{ secrets.AWS_EC2_USER_NAME }} 
+    steps: 
+      - uses: actions/checkout@v4
+      - name: copy files
+        uses: appleboy/scp-action@v0.1.7
+        with:
+          host: ${{ env.AWS_EC2_HOST }}
+          username: ${{ env.AWS_EC2_USER_NAME }}
+          key: ${{ env.AWS_EC2_SSH_KEY }}
+          source: "scripts/deploy-to-ec2.sh,docker-compose.yml,.env,.db.env,db/webapp.sql"
+          target: /home/ubuntu
+
+      - name: ssh connect and run docker-compose
+        uses: appleboy/ssh-action@v1.0.2
+        with:
+          host: ${{ env.AWS_EC2_HOST }}
+          username: ${{ env.AWS_EC2_USER_NAME }}
+          key: ${{ env.AWS_EC2_SSH_KEY }}
+          script: bash ./scripts/deploy-to-ec2.sh

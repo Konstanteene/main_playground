@@ -12,7 +12,7 @@ services:
     volumes:
       - db_data:/var/lib/mysql
       - ./db/webapp.sql:/docker-entrypoint-initdb.d/webapp.sql
-    healthcheck:
+    healthcheck:  # search for something better mb
       test: ["CMD", 'mysqladmin', 'ping', '-h', 'localhost', '-u', 'root', '-p$$MYSQL_ROOT_PASSWORD' ]
       interval: 5s
       retries: 3

@@ -23,35 +23,35 @@ jobs:
       with:
         node-version: 20
     
-    - name: Github connection config
-      run: |
-        git config --global user.email "feature@example.com"
-        git config --global user.name "Github Action"
+    # - name: Github connection config
+    #   run: |
+    #     git config --global user.email "feature@example.com"
+    #     git config --global user.name "Github Action"
 
-    - name: Version increment
-      run: npm --no-git-tag-version version patch
+    # - name: Version increment
+    #   run: npm --no-git-tag-version version patch
 
-    - name: Get current app version
-      run: echo "CURRENT_VERSION=$(node -p 'require("./package.json").version')" >> $GITHUB_ENV
+    # - name: Get current app version
+    #   run: echo "CURRENT_VERSION=$(node -p 'require("./package.json").version')" >> $GITHUB_ENV
 
-    - name: Login to Docker Hub
-      uses: docker/login-action@v3
-      with:
-        username: ${{ env.DOCKERHUB_USERNAME }}
-        password: ${{ env.DOCKERHUB_PASSWORD }}
+    # - name: Login to Docker Hub
+    #   uses: docker/login-action@v3
+    #   with:
+    #     username: ${{ env.DOCKERHUB_USERNAME }}
+    #     password: ${{ env.DOCKERHUB_PASSWORD }}
 
-    - name: Build docker image and push
-      uses: docker/build-push-action@v5
-      with:
-        push: true
-        tags: ${{ env.DOCKERHUB_USERNAME }}/webapp:${{ env.CURRENT_VERSION }},${{ env.DOCKERHUB_USERNAME }}/webapp:latest
+    # - name: Build docker image and push
+    #   uses: docker/build-push-action@v5
+    #   with:
+    #     push: true
+    #     tags: ${{ env.DOCKERHUB_USERNAME }}/webapp:${{ env.CURRENT_VERSION }},${{ env.DOCKERHUB_USERNAME }}/webapp:latest
     
-    - name: Commit version update
-      run: |
-        git remote set-url origin "https://${{ env.GH_USERNAME }}:${{ env.GH_PASSWORD }}@github.com/Konstanteene/main_playground.git"
-        git add .
-        git commit -m "ci: version bump"
-        git push origin feature/cd-step
+    # - name: Commit version update
+    #   run: |
+    #     git remote set-url origin "https://${{ env.GH_USERNAME }}:${{ env.GH_PASSWORD }}@github.com/Konstanteene/main_playground.git"
+    #     git add .
+    #     git commit -m "ci: version bump"
+    #     git push origin feature/cd-step
 
   deploy:
     needs: build
@@ -62,19 +62,19 @@ jobs:
       AWS_EC2_USER_NAME: ${{ secrets.AWS_EC2_USER_NAME }} 
     steps: 
       - uses: actions/checkout@v4
-      - name: copy files
-        uses: appleboy/scp-action@v0.1.7
-        with:
-          host: ${{ env.AWS_EC2_HOST }}
-          username: ${{ env.AWS_EC2_USER_NAME }}
-          key: ${{ env.AWS_EC2_SSH_KEY }}
-          source: "scripts/deploy-to-ec2.sh,docker-compose.yml,.env,.db.env,db/webapp.sql"
-          target: /home/ubuntu
+      # - name: copy files
+      #   uses: appleboy/scp-action@v0.1.7
+      #   with:
+      #     host: ${{ env.AWS_EC2_HOST }}
+      #     username: ${{ env.AWS_EC2_USER_NAME }}
+      #     key: ${{ env.AWS_EC2_SSH_KEY }}
+      #     source: "scripts/deploy-to-ec2.sh,docker-compose.yml,.env,.db.env,db/webapp.sql"
+      #     target: /home/ubuntu
 
-      - name: ssh connect and run docker-compose
-        uses: appleboy/ssh-action@v1.0.2
-        with:
-          host: ${{ env.AWS_EC2_HOST }}
-          username: ${{ env.AWS_EC2_USER_NAME }}
-          key: ${{ env.AWS_EC2_SSH_KEY }}
-          script: bash ./scripts/deploy-to-ec2.sh
+      # - name: ssh connect and run docker-compose
+      #   uses: appleboy/ssh-action@v1.0.2
+      #   with:
+      #     host: ${{ env.AWS_EC2_HOST }}
+      #     username: ${{ env.AWS_EC2_USER_NAME }}
+      #     key: ${{ env.AWS_EC2_SSH_KEY }}
+      #     script: bash ./scripts/deploy-to-ec2.sh
