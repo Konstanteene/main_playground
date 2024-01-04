@@ -12,6 +12,10 @@ services:
     volumes:
       - db_data:/var/lib/mysql
       - ./db/webapp.sql:/docker-entrypoint-initdb.d/webapp.sql
+    healthcheck:
+      test: ["CMD", 'mysqladmin', 'ping', '-h', 'localhost', '-u', 'root', '-p$$MYSQL_ROOT_PASSWORD' ]
+      interval: 5s
+      retries: 3
     restart: on-failure
 
   webapp:
@@ -21,7 +25,9 @@ services:
     image: konstanteenn/webapp:latest
     container_name: webapp
     depends_on:
-      - mysql
+      mysql:
+       condition: service_healthy
+
     restart: on-failure
     env_file:
       - .env
