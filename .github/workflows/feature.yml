@@ -51,8 +51,10 @@ jobs:
         git remote set-url origin "https://${{ env.GH_USERNAME }}:${{ env.GH_PASSWORD }}@github.com/Konstanteene/main_playground.git"
         git add .
         git commit -m "ci: version bump"
-        git push origin feature
+        git push origin feature/cd-step
+
   deploy:
+    needs: build
     runs-on: ubuntu-latest
     env:
       AWS_EC2_SSH_KEY: ${{ secrets.AWS_EC2_SSH_KEY }}
