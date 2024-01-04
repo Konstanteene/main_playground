@@ -19,9 +19,6 @@ services:
     restart: on-failure
 
   webapp:
-    # build:
-    #   context: ./
-    #   dockerfile: Dockerfile
     image: konstanteenn/webapp:latest
     container_name: webapp
     depends_on:
