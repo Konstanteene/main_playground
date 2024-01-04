@@ -68,7 +68,7 @@ jobs:
           host: ${{ env.AWS_EC2_HOST }}
           username: ${{ env.AWS_EC2_USER_NAME }}
           key: ${{ env.AWS_EC2_SSH_KEY }}
-          source: "scripts/deploy-to-ec2.sh,docker-compose.yml,.env, db/webapp.sql"
+          source: "scripts/deploy-to-ec2.sh,docker-compose.yml,.env,.db.env,db/webapp.sql"
           target: /home/ubuntu
 
       - name: ssh connect and run docker-compose
