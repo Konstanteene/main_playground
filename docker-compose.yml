@@ -5,27 +5,33 @@ services:
     image: mysql:8.2
     container_name: mysql-8.2
     env_file:
-      - .env
+      - .db.env
     environment:
       MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
       MYSQL_DATABASE: ${MYSQL_DATABASE}
     volumes:
       - db_data:/var/lib/mysql
       - ./db/webapp.sql:/docker-entrypoint-initdb.d/webapp.sql
+    healthcheck:  # search for something better mb
+      test: ["CMD", 'mysqladmin', 'ping', '-h', 'localhost', '-u', 'root', '-p$$MYSQL_ROOT_PASSWORD' ]
+      interval: 5s
+      retries: 3
     restart: on-failure
 
   webapp:
-    image: konstanteen/webapp:latest
+    image: konstanteenn/webapp:latest
     container_name: webapp
     depends_on:
-      - mysql
+      mysql:
+       condition: service_healthy
+
     restart: on-failure
     env_file:
       - .env
     environment:  
       MYSQL_DATABASE: ${MYSQL_DATABASE}
       MYSQL_USER: ${MYSQL_USER}
-      MYSQL_PASSWORD: ${MYSQL_PASSWORD}
+      MYSQL_ROOT_PASSWORD: ${MYSQL_ROOT_PASSWORD}
       MYSQL_HOST: ${MYSQL_HOST}
     ports:
       - 3000:3000
