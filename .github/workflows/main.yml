@@ -1,4 +1,4 @@
-name: ci/cd (feature)
+name: ci/cd (main)
 
 on:
   push:
