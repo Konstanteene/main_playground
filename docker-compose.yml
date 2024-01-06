@@ -20,6 +20,7 @@ services:
 
   webapp:
     image: konstanteenn/webapp:latest
+    # image: ${IMAGE_NAME}    # todo (add dynamic versioning)
     container_name: webapp
     depends_on:
       mysql:

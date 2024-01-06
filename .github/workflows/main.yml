@@ -1,9 +1,10 @@
 name: ci/cd (main)
 
 on:
-  push:
-    branches:
-      - 'main'
+  # push:
+  #   branches:
+  #     - 'main'
+  workflow_dispatch:
 
 jobs:
   build:
@@ -13,6 +14,7 @@ jobs:
       DOCKERHUB_PASSWORD: ${{ secrets.DOCKERHUB_PASSWORD }}
       GH_PASSWORD: ${{ secrets.GH_PASSWORD }} # github password
       GH_USERNAME: ${{ vars.GH_USERNAME }} # github username
+      # APP: $DOCKERHUB_USERNAME/webapp
 
     steps:
     - name: Checkout repository
@@ -42,7 +44,7 @@ jobs:
 
     - name: Build docker image and push
       uses: docker/build-push-action@v5
-      with:
+      with: 
         push: true
         tags: ${{ env.DOCKERHUB_USERNAME }}/webapp:${{ env.CURRENT_VERSION }},${{ env.DOCKERHUB_USERNAME }}/webapp:latest
     
@@ -77,4 +79,5 @@ jobs:
           host: ${{ env.AWS_EC2_HOST }}
           username: ${{ env.AWS_EC2_USER_NAME }}
           key: ${{ env.AWS_EC2_SSH_KEY }}
+          # script: bash ./scripts/deploy-to-ec2.sh ${{ env.IMAGE_NAME }}
           script: bash ./scripts/deploy-to-ec2.sh
