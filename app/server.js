@@ -11,7 +11,7 @@ const PORT = 3000;
 
 app.use(express.static(path.join(__dirname, 'pages')));
 
-// db 
+// db s
 var connection = mysql.createConnection({
     host     : process.env.MYSQL_HOST,
     // user     : process.env.MYSQL_USER || 'root',
